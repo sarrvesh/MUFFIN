@@ -15,7 +15,7 @@ from astropy.io import fits
 import pylab as pl
 from deconv3d_tools import conv, fix_dim
 from tictoc import tic, toc
-from super_nice_spectra_deconv import SNSD
+#from super_nice_spectra_deconv import SNSD
 from deconv3d import EasyMuffin, EasyMuffinSURE
 import argparse 
 
