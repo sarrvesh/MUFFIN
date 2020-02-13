@@ -201,7 +201,7 @@ class EasyMuffin():
         # compute cost & snr, psnr, wmse
         self.costlist = []
         self.costlist.append(self.cost())
-        if self.truesky.any():
+        if any(self.truesky):
             self.snrlist = []
             self.truesky2 = np.sum(self.truesky*self.truesky)
             self.wmselist = []
@@ -260,9 +260,15 @@ class EasyMuffin():
         
         for freq in range(self.nfreq):
             # compute iuwt adjoint
+    
             wstu = self.Recomp(self.u[freq], self.nbw_recomp)
             # compute xt
+            #print(self.alpha_l*t[:,:,freq].shape)
+            #print(self.x[:,:,freq].shape)
+            #print(self.xtt[:,:,freq].shape)
+            
             self.xtt[:,:,freq] = self.x[:,:,freq] - self.tau*(Delta_freq[:,:,freq] + self.mu_s*self.alpha_s[freq]*wstu + self.mu_l*self.alpha_l*t[:,:,freq])
+            
             self.xt[:,:,freq] = np.maximum(self.xtt[:,:,freq], 0.0, dtype=np.float )
             # update u
             tmp_spat_scal = self.Decomp(2*self.xt[:,:,freq] - self.x[:,:,freq] , self.nbw_decomp)
@@ -285,7 +291,7 @@ class EasyMuffin():
             
         # compute cost snr, psnr, wmse if truesky given
         self.costlist.append(self.cost())
-        if self.truesky.any():
+        if any(self.truesky):
             self.snrlist.append(self.snr())
             self.psnrlist.append(self.psnr())
             self.wmselist.append(self.wmse())
@@ -303,7 +309,7 @@ class EasyMuffin():
         # Iterations
         for niter in range(nitermax):
             self.update()
-            if self.truesky.any():
+            if any(self.truesky):
                 if (niter % 20) ==0:
                     print(str_cst_snr_title.format('It.','Cost','SNR'))
                 print(str_cst_snr.format(niter,self.costlist[-1],self.snrlist[-1]))
