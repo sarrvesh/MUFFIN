@@ -10,21 +10,28 @@ import argparse
 from deconv3d import EasyMuffin
 from astropy.io import fits
 from deconv3d_tools import conv, fix_dim
+import numpy as np
+import matplotlib.pyplot as plt 
+
+
 
 parser=argparse.ArgumentParser()
 parser.add_argument('-d','--dirty',help='add path to dirty image fits file')
 parser.add_argument('-p','--psf',help='add path to psf fits file')
 parser.add_argument('-N','--niter',help='add number of iterations', type=int)
+parser.add_argument('-s','--save',help='save output', type=int)
+parser.add_argument('-C','--channels',help='number of channels', type=int)
 args = parser.parse_args()
 
 dirtyim=args.dirty
 psfim=args.psf
 niter=args.niter
-
+Save=args.save
+L=args.channels
 #dirtyfits=fits.open(dirtyim)
 #psffits=fits.open(psfim)
 
-L=5
+
 
 #dirtyfits=dirtyfits[0].data
 #psffits=psffits[0].data
@@ -32,10 +39,24 @@ L=5
 psffits=fix_dim(fits.getdata(psfim, ext=0))[:,:,0:L]
 dirtyfits=fix_dim(fits.getdata(dirtyim, ext=0))[:,:,0:L]
 #print(dirtyfits)
-a=EasyMuffin(dirty=dirtyfits,psf=psffits)
+a=EasyMuffin(dirty=dirtyfits,psf=psffits,save=Save)
 
 a.loop(niter)
 
-#print(dirtyim)
-#print(psfim)
-#print(niter)
+
+
+u=np.load('u.npy',allow_pickle=True)
+v=np.load('v.npy', allow_pickle=True)
+x0=np.load('x0_tst.npy', allow_pickle=True)
+
+
+
+#print(x0[:,:,4].shape)
+
+for i in range(L):
+    filename = 'chan_{:03d}.png'.format(i)
+    print(filename)
+    plt.imshow(x0[:,:,i])
+    plt.savefig(filename)
+    plt.close()
+    #plt.show()
