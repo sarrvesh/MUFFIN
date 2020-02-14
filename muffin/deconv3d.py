@@ -120,6 +120,7 @@ class EasyMuffin():
 
         # x initialization 
         self.x = np.zeros((self.nxy,self.nxy,self.nfreq), dtype=np.float,order='F')
+        
         if self.dirtyinit:
             self.x = self.dirtyinit
         elif self.init:

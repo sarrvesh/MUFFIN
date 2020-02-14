@@ -47,11 +47,19 @@ a.loop(niter)
 
 u=np.load('u.npy',allow_pickle=True)
 v=np.load('v.npy', allow_pickle=True)
-x0=np.load('x0_tst.npy', allow_pickle=True)
+#x0=np.load('x0_tst.npy', allow_pickle=True)
+x0=a.x
+
+x0=np.transpose(x0)
+
+#print(x0)
+
+hdu=fits.PrimaryHDU(data=x0)
+hdu.writeto('x0.fits', overwrite=True)
 
 
-
-#print(x0[:,:,4].shape)
+#testfits=fits.open('x0.fits')
+#print(testfits[0].data)
 
 for i in range(L):
     filename = 'chan_{:03d}.png'.format(i)
