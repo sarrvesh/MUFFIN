@@ -59,7 +59,7 @@ class EasyMuffin():
 
         if mu_l< 0 :
             print('mu_l must be non negative, mu_l=0.')
-            mu_s=0.0
+            mu_l=0.0
 
         if tau< 0 :
             print('tau must be non negative, tau=1e-4')
@@ -388,7 +388,7 @@ class EasyMuffinSURE(EasyMuffin):
             self.wmselistsure = []
             self.wmselistsure.append(self.wmsesure())
 
-            if self.truesky.any():
+            if any(self.truesky):
                 self.psnrlistsure = []
                 self.psnrlistsure.append(self.psnrsure())
 
@@ -534,7 +534,7 @@ class EasyMuffinSURE(EasyMuffin):
         # wmsesure
         self.wmselistsure.append(self.wmsesure())
         # psnrsure
-        if self.truesky.any():
+        if any(self.truesky):
             self.psnrlistsure.append(self.psnrsure())
         
         return self.wmselistsure[-1]
@@ -552,7 +552,7 @@ class EasyMuffinSURE(EasyMuffin):
             self.update_jacobians()
             self.nitertot+=1
 
-            if self.truesky.any():
+            if any(self.truesky):
                 if (niter % 20) ==0:
                     print(str_cst_snr_wmse_wmsesure_title.format('It.','Cost','SNR','WMSE','WMSES'))
                 #print(str_cst_snr_wmse_wmsesure.format(niter,self.costlist[-1],self.snrlist[-1],self.wmselist[-1],self.wmselistsure[-1]))

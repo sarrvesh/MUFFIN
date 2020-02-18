@@ -7,7 +7,7 @@ Created on Wed Feb 12 12:51:56 2020
 """
 
 import argparse
-from deconv3d import EasyMuffin
+from deconv3d import EasyMuffin, EasyMuffinSURE 
 from astropy.io import fits
 from deconv3d_tools import conv, fix_dim
 import numpy as np
@@ -28,27 +28,19 @@ psfim=args.psf
 niter=args.niter
 Save=args.save
 L=args.channels
-#dirtyfits=fits.open(dirtyim)
-#psffits=fits.open(psfim)
 
-
-
-#dirtyfits=dirtyfits[0].data
-#psffits=psffits[0].data
 
 psffits=fix_dim(fits.getdata(psfim, ext=0))[:,:,0:L]
 dirtyfits=fix_dim(fits.getdata(dirtyim, ext=0))[:,:,0:L]
-#print(dirtyfits)
-a=EasyMuffin(dirty=dirtyfits,psf=psffits,save=Save)
-
-a.loop(niter)
 
 
+b= EasyMuffinSURE(psf=psffits,dirty=dirtyfits,save=Save)
+b.loop(niter)
 
 #u=np.load('u.npy',allow_pickle=True)
 #v=np.load('v.npy', allow_pickle=True)
 #x0=np.load('x0_tst.npy', allow_pickle=True)
-x1=a.x
+x1=b.x
 
 x0=np.transpose(x1)
 
