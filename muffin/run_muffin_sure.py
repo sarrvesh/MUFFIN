@@ -47,15 +47,15 @@ x0=np.transpose(x1)
 #print(x0)
 
 hdu=fits.PrimaryHDU(data=x0)
-hdu.writeto('x0.fits', overwrite=True)
+hdu.writeto('/home/thecuriosvambo/Work/MUFFIN/muffin/muff_sure_content/muff_sure_x0.fits', overwrite=True)
 
 
 #testfits=fits.open('x0.fits')
 #print(testfits[0].data)
 
 for i in range(L):
-    filename = 'chan_{:03d}.png'.format(i)
-    print(filename)
+    filename = '/home/thecuriosvambo/Work/MUFFIN/muffin/muff_sure_content/chan_{:03d}.png'.format(i)
+    #print(filename)
     plt.imshow(x1[:,:,i])
     plt.savefig(filename)
     plt.close()
